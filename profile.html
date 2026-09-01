@@ -11,7 +11,7 @@
     html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #fff; }
     .profile-frame { display: block; width: 100%; height: 100%; border: 0; }
     .profile-home-btn {
-      position: fixed; top: 0; right: 300px; z-index: 9999;
+      position: fixed; top: 0; left: 50%; right: auto; transform: translateX(-50%); z-index: 9999;
       display: grid; place-items: center; width: 54px; height: 54px;
       border: 0; border-right: 1px solid rgba(255,255,255,.25);
       background: #ffffff; color: #111827; text-decoration: none;
@@ -21,7 +21,7 @@
     .profile-home-btn:focus-visible { outline: 3px solid #38bdf8; outline-offset: -3px; }
     .profile-home-btn svg { width: 29px; height: 29px; fill: currentColor; }
     @media (max-width: 700px) {
-      .profile-home-btn { right: 248px; width: 48px; height: 48px; }
+      .profile-home-btn { left: 50%; right: auto; width: 48px; height: 48px; }
       .profile-home-btn svg { width: 26px; height: 26px; }
     }
   </style>
@@ -68,9 +68,14 @@
         return;
       }
 
+      // URL ของหน้านี้เป็นแหล่งข้อมูลหลักเสมอ ป้องกัน session เก่าพานักศึกษาผิดคน
+      try { sessionStorage.setItem('SSS_PROFILE_ROLLNO', rollno); } catch (_) {}
+
       const target = new URL(webAppUrl);
       target.searchParams.set('rollno', rollno);
       target.searchParams.set('githubAutoLogin', '1');
+      // บังคับ iframe โหลด session ใหม่ ไม่ใช้หน้า Web App ที่ browser อาจ cache ไว้
+      target.searchParams.set('_profileSession', `${rollno}-${Date.now()}`);
       frame.src = target.toString();
     })();
   </script>
