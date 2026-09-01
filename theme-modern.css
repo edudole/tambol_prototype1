@@ -238,12 +238,52 @@ body.theme-v2 .student-service-tabs .is-active {
   background: #4f46e5;
 }
 
-body.theme-v2 .student-service-open,
-body.theme-v2 .best-practice-box-more-btn,
-body.theme-v2 .fbpost-box-more-btn {
+body.theme-v2 .student-service-open {
   background: rgba(225,225,225,.10);
   color: #ffffff;
   border: 1px solid rgba(91,94,232,.13);
+}
+
+/* Index: action buttons use the same visual language as .shopactivity-open-all */
+body.theme-v2 .best-practice-box-more-btn,
+body.theme-v2 .fbpost-box-more-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 45px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 13px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+body.theme-v2 .best-practice-box-more-btn {
+  background: #7c3aed;
+  box-shadow: 0 8px 20px rgba(124,58,237,.22);
+}
+
+body.theme-v2 .fbpost-box-more-btn {
+  background: #1877f2;
+  box-shadow: 0 8px 20px rgba(24,119,242,.22);
+}
+
+body.theme-v2 .best-practice-box-more-btn:hover,
+body.theme-v2 .fbpost-box-more-btn:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  filter: brightness(.98);
+}
+
+body.theme-v2 .best-practice-box-more-btn:hover {
+  box-shadow: 0 12px 26px rgba(124,58,237,.28);
+}
+
+body.theme-v2 .fbpost-box-more-btn:hover {
+  box-shadow: 0 12px 26px rgba(24,119,242,.28);
 }
 
 body.theme-v2 .home-summary-card,
