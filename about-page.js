@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const API_URL='https://script.google.com/macros/s/AKfycbwNWHswYVm6hcJran7djOygoEckCC101qHU9dbSsHCmQWA8r2Sfsez3ZYgbz5BufoQnsw/exec';
+  const API_URL=window.APP_CONFIG.API_URL;
   const text=value=>String(value??'').trim();
 
   function safeUrl(value){

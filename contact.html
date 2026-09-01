@@ -11,12 +11,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="about-page.css?v=20260824-1">
+  <link rel="stylesheet" href="admin-subpage.css?v=20260826-1">
+  <link rel="stylesheet" href="contact-manager.css?v=20260902-1">
   <link rel="stylesheet" href="theme-modern.css?v=20260902-1">
 </head>
 <body class="theme-v2" data-about-page="contact">
   <main class="about-page">
     <div class="about-container">
-      <div class="about-topbar"><a class="about-back" href="index.html">← กลับหน้าหลัก</a></div>
+      <div class="about-topbar admin-subpage-topbar">
+        <button class="admin-manage-data-button" type="button" data-admin-page="contact" hidden>จัดการข้อมูล</button>
+        <a class="about-back" href="index.html">← กลับหน้าหลัก</a>
+      </div>
       <header class="about-heading">
         <div class="about-kicker">CONTACT</div>
         <h1>ติดต่อ/สอบถาม</h1>
@@ -41,6 +46,9 @@
       </div>
     </div>
   </main>
-  <script src="about-page.js?v=20260824-1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="about-page.js?v=20260902-2"></script>
+  <script src="admin-subpage.js?v=20260826-1"></script>
+  <script src="contact-manager.js?v=20260902-1"></script>
 </body>
 </html>
