@@ -623,7 +623,7 @@ body.theme-v2 .spinner {
 }
 
 body.theme-v2 .profile-home-btn {
-  border-radius: 0 0 0 14px;
+  border-radius: 0 0 14px 14px;
   background: linear-gradient(135deg, #4f46e5, #06b6d4);
   color: #fff;
   box-shadow: 0 8px 24px rgba(55,48,163,.2);
