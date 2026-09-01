@@ -241,8 +241,8 @@ body.theme-v2 .student-service-tabs .is-active {
 body.theme-v2 .student-service-open,
 body.theme-v2 .best-practice-box-more-btn,
 body.theme-v2 .fbpost-box-more-btn {
-  background: rgba(91,94,232,.10);
-  color: #4338ca;
+  background: rgba(225,225,225,.10);
+  color: #ffffff;
   border: 1px solid rgba(91,94,232,.13);
 }
 
