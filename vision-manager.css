@@ -3,17 +3,6 @@
   font-family: "Kanit", "Noto Sans Thai", Arial, sans-serif;
 }
 
-.vision-manager-note {
-  margin: 0 0 14px;
-  padding: 11px 14px;
-  border: 1px solid #bfdbfe;
-  border-radius: 10px;
-  background: #eff6ff;
-  color: #1e3a8a;
-  font-size: 14px;
-  line-height: 1.65;
-}
-
 .vision-manager-table-wrap {
   overflow: auto;
   max-height: 58vh;
@@ -74,13 +63,14 @@ textarea.vision-manager-input {
 
 .vision-manager-badge {
   display: inline-block;
-  margin: 0 0 7px;
-  padding: 3px 8px;
+  margin: 4px 0;
+  padding: 9px 14px;
   border-radius: 999px;
   background: #e0e7ff;
   color: #3730a3;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.35;
 }
 
 .vision-manager-toolbar,
