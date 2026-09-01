@@ -4,7 +4,7 @@
   const API_URL =
     window.APP_CONFIG.API_URL;
 
-  const HOMEFAST_CACHE_KEY = 'homefast-v6-login-card-admin-fix';
+  const HOMEFAST_CACHE_KEY = 'homefast-v7-vision-admin';
   const HOMEFAST_TTL = 2 * 60 * 1000;
   const HOMEFAST_STALE_TTL = 15 * 60 * 1000;
   const NETWORK_TIMEOUT = 15000;

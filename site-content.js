@@ -44,6 +44,13 @@
 
       const hero = result.hero || {};
       const footer = result.footer || {};
+      const vision = result.vision || {};
+
+      // เมนูหน้าแรกใช้หัวข้อใหญ่เดียวกับ vision.html (setting!Q3)
+      const visionMenu = document.querySelector('a[href="vision.html"][role="menuitem"]');
+      if (visionMenu && String(vision.title || '').trim()) {
+        visionMenu.textContent = String(vision.title).trim();
+      }
 
       setOptionalText('heroKickerText', hero.kicker);
       setOptionalText('heroTitleText', hero.title);
