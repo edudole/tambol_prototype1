@@ -41,7 +41,7 @@
       contain-intrinsic-size: 1px 620px;
     }
 </style>
-<link rel="stylesheet" href="style.css?v=20260828-register-1" />
+<link rel="stylesheet" href="style.css?v=20260902-mobile-nav-1" />
   <link rel="stylesheet" href="announcement.css?v=20260824-1" />
   <link rel="stylesheet" href="site-content.css?v=20260824-1" />
   <link rel="stylesheet" href="admin-mode.css?v=20260901-team-index-1" />
@@ -163,7 +163,7 @@
         </div>
       </div>
 
-      <div class="main-nav-dropdown">
+      <div class="main-nav-dropdown" data-section-id="bestPracticeBox">
         <button class="main-nav-dropdown-toggle" type="button" aria-expanded="false">
           ผลงานของเรา <span aria-hidden="true">▾</span>
         </button>
@@ -176,9 +176,9 @@
         </div>
       </div>
 
-      <a href="#learningSourceBox">แหล่งเรียนรู้</a>
-      <a href="#cliproomBox">หลักสูตรออนไลน์</a>
-      <a href="#learningBaseModule">ช้อปกิจกรรม</a>
+      <a href="#learningSourceBox" data-section-id="learningSourceBox">แหล่งเรียนรู้</a>
+      <a href="#cliproomBox" data-section-id="cliproomBox">หลักสูตรออนไลน์</a>
+      <a href="#learningBaseModule" data-section-id="learningBaseModule">ช้อปกิจกรรม</a>
 
       <div class="main-nav-dropdown">
         <button class="main-nav-dropdown-toggle" type="button" aria-expanded="false">
@@ -648,7 +648,7 @@
 <script defer src="site-content.js?v=20260902-vision-1"></script>
 <script defer src="admin-mode.js?v=20260901-team-index-1"></script>
 <script defer src="team-manager.js?v=20260901-index-1"></script>
-<script defer src="admin-section-guide.js?v=20260902-nav-1"></script>
+<script defer src="admin-section-guide.js?v=20260902-mobile-nav-1"></script>
 <script defer src="home-summary.js?v=20260830-fast-2"></script>
 <script defer src="profile-config.js?v=20260821-1"></script>
 <script defer src="student-profile-login.js?v=20260902-login-card-1"></script>
@@ -949,96 +949,99 @@
      class="mobile-bottom-nav"
      aria-label="เมนูด้านล่าง">
 
-  <a href="#home" class="mobile-bottom-link active">
-    <i class="fa fa-home" aria-hidden="true"></i>
-    <span>Home</span>
-  </a>
+  <div id="mobileBottomPrimary" class="mobile-bottom-primary">
+    <a href="#home"
+       class="mobile-bottom-link active"
+       data-mobile-nav-item
+       data-nav-key="home">
+      <i class="fa fa-home" aria-hidden="true"></i>
+      <span>Home</span>
+    </a>
 
-  <a href="#newsSlider" class="mobile-bottom-link">
-    <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-    <span>ข่าวสาร</span>
-  </a>
+    <button type="button"
+            class="mobile-bottom-link mobile-bottom-menu-trigger"
+            data-mobile-nav-item
+            data-nav-key="works"
+            data-section-id="bestPracticeBox"
+            aria-haspopup="true"
+            aria-expanded="false">
+      <i class="fa fa-trophy" aria-hidden="true"></i>
+      <span>ผลงานของเรา</span>
+    </button>
 
-  <a href="#learningSourceBox" class="mobile-bottom-link">
-    <i class="fa fa-map-marker" aria-hidden="true"></i>
-    <span>แหล่งเรียนรู้</span>
-  </a>
+    <a href="#cliproomBox"
+       class="mobile-bottom-link"
+       data-mobile-nav-item
+       data-nav-key="courses"
+       data-section-id="cliproomBox">
+      <i class="fa fa-play-circle" aria-hidden="true"></i>
+      <span>หลักสูตรออนไลน์</span>
+    </a>
 
-  <a href="#cliproomBox" class="mobile-bottom-link">
-    <i class="fa fa-play-circle" aria-hidden="true"></i>
-    <span>หลักสูตร</span>
-  </a>
+    <a href="#learningBaseModule"
+       class="mobile-bottom-link"
+       data-mobile-nav-item
+       data-nav-key="shop"
+       data-section-id="learningBaseModule">
+      <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+      <span>ช้อปกิจกรรม</span>
+    </a>
 
-<a href="shopactivity.html" class="mobile-bottom-link" target="_blank" rel="noopener">
-    <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-    <span>กิจกรรม</span>
-  </a>
+    <button type="button"
+            class="mobile-bottom-link mobile-bottom-menu-trigger"
+            data-mobile-nav-item
+            data-nav-key="district"
+            aria-haspopup="true"
+            aria-expanded="false">
+      <i class="fa fa-map-marker" aria-hidden="true"></i>
+      <span>สกร.ระดับตำบล</span>
+    </button>
 
+    <button type="button"
+            class="mobile-bottom-link mobile-bottom-menu-trigger"
+            data-mobile-nav-item
+            data-nav-key="library"
+            aria-haspopup="true"
+            aria-expanded="false">
+      <i class="fa fa-book" aria-hidden="true"></i>
+      <span>ห้องสมุด</span>
+    </button>
+
+    <button id="mobileBottomMore"
+            type="button"
+            class="mobile-bottom-link mobile-bottom-more"
+            aria-haspopup="true"
+            aria-expanded="false"
+            hidden>
+      <i class="fa fa-bars" aria-hidden="true"></i>
+      <span>เมนู</span>
+    </button>
+  </div>
+
+  <div id="mobileBottomPanel"
+       class="mobile-bottom-panel"
+       role="dialog"
+       aria-modal="false"
+       aria-label="เมนูเพิ่มเติม"
+       hidden>
+    <div class="mobile-bottom-panel-head">
+      <button id="mobileBottomPanelBack"
+              class="mobile-bottom-panel-back"
+              type="button"
+              aria-label="ย้อนกลับ"
+              hidden>
+        <i class="fa fa-angle-left" aria-hidden="true"></i>
+      </button>
+      <strong id="mobileBottomPanelTitle">เมนู</strong>
+      <button id="mobileBottomPanelClose"
+              class="mobile-bottom-panel-close"
+              type="button"
+              aria-label="ปิดเมนู">×</button>
+    </div>
+    <div id="mobileBottomPanelList" class="mobile-bottom-panel-list"></div>
+  </div>
 </nav>
-  <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const mobileLinks = Array.from(
-    document.querySelectorAll('.mobile-bottom-link')
-  );
-
-  const sectionIds = [
-    'home',
-    'newsSlider',
-    'learningSourceBox',
-    'cliproomBox',
-    'learningBaseModule'
-  ];
-
-  const setActiveMenu = function (targetId) {
-    mobileLinks.forEach(function (link) {
-      const href = link.getAttribute('href');
-      link.classList.toggle(
-        'active',
-        href === '#' + targetId
-      );
-    });
-  };
-
-  mobileLinks.forEach(function (link) {
-    link.addEventListener('click', function () {
-      const targetId = link
-        .getAttribute('href')
-        .replace('#', '');
-
-      setActiveMenu(targetId);
-    });
-  });
-
-  const observer = new IntersectionObserver(
-    function (entries) {
-      const visibleEntries = entries
-        .filter(function (entry) {
-          return entry.isIntersecting;
-        })
-        .sort(function (a, b) {
-          return b.intersectionRatio - a.intersectionRatio;
-        });
-
-      if (visibleEntries.length) {
-        setActiveMenu(visibleEntries[0].target.id);
-      }
-    },
-    {
-      root: null,
-      rootMargin: '-20% 0px -60% 0px',
-      threshold: [0.01, 0.1, 0.25]
-    }
-  );
-
-  sectionIds.forEach(function (id) {
-    const section = document.getElementById(id);
-
-    if (section) {
-      observer.observe(section);
-    }
-  });
-});
-</script>
+<script defer src="mobile-bottom-nav.js?v=20260902-dynamic-overflow-1"></script>
   <!-- Popup ประชาสัมพันธ์จากชีต boss -->
   <div id="bossPopup" class="boss-popup" hidden aria-hidden="true">
     <div class="boss-popup-dialog" role="dialog" aria-modal="true" aria-label="ประชาสัมพันธ์">
