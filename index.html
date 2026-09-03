@@ -14,13 +14,28 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <script>
-    // เริ่มโหลดข้อมูลหลักตั้งแต่ <head> ไม่ต้องรอ JavaScript ด้านล่างหน้า
-    window.__SITE_HOMEFAST_PREFETCH = fetch(
-      window.APP_CONFIG.API_URL + '?mode=homefast',
-      { method: 'GET', cache: 'default', credentials: 'omit' }
-    ).then(function (response) {
-      return response.ok ? response.json() : null;
-    }).catch(function () { return null; });
+    // Cold load: เริ่ม homefast เร็วตั้งแต่ <head>.
+    // Repeat load: ถ้ามี cache อายุไม่เกิน 15 นาที ไม่ยิง Apps Script ซ้ำ เพื่อให้เน็ตว่างสำหรับ CSS/รูปภาพ.
+    (function () {
+      var cacheKey = 'SITE_FAST:homefast-v8-performance';
+      var maxAge = 15 * 60 * 1000;
+      var admin = false;
+      try { admin = Boolean(sessionStorage.getItem('mysiteAdminToken')); } catch (_) {}
+      function hasUsable(storage) {
+        if (!storage) return false;
+        try {
+          var saved = JSON.parse(storage.getItem(cacheKey) || 'null');
+          return Boolean(saved && saved.savedAt && (Date.now() - saved.savedAt <= maxAge));
+        } catch (_) { return false; }
+      }
+      if (!admin && (hasUsable(window.sessionStorage) || hasUsable(window.localStorage))) return;
+      window.__SITE_HOMEFAST_PREFETCH = fetch(
+        window.APP_CONFIG.API_URL + '?mode=homefast',
+        { method: 'GET', cache: 'default', credentials: 'omit' }
+      ).then(function (response) {
+        return response.ok ? response.json() : null;
+      }).catch(function () { return null; });
+    })();
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -36,26 +51,12 @@
   }
 
     /* ลดงาน layout/paint ของส่วนล่างที่ยังไม่อยู่ในจอ */
-    #learningSourceBox, #bestPracticeBox, #FBpostBox, #cliproomBox, #learningBaseModule {
+    #featured, #learningSourceBox, #bestPracticeBox, #FBpostBox, #cliproomBox, #learningBaseModule {
       content-visibility: auto;
       contain-intrinsic-size: 1px 620px;
     }
 </style>
-<link rel="stylesheet" href="style.css?v=20260902-mobile-nav-1" />
-  <link rel="stylesheet" href="announcement.css?v=20260824-1" />
-  <link rel="stylesheet" href="site-content.css?v=20260824-1" />
-  <link rel="stylesheet" href="admin-mode.css?v=20260901-team-index-1" />
-  <link rel="stylesheet" href="admin-section-guide.css?v=20260827-1" />
-  <link rel="stylesheet" href="learning-source-box.css?v=20260901-map-v5" />
-  <link rel="stylesheet" href="activity-box.css?v=20260826-6" />
-  <link rel="stylesheet" href="best-practice-box.css?v=20260902-admin-1" />
-  <link rel="stylesheet" href="fbpost-box.css?v=20260826-1" />
-  <link rel="stylesheet" href="boss-box.css?v=20260901-team-carousel-center-3" />
-  <link rel="stylesheet" href="bus-box.css?v=20260723-1" />
-  <link rel="stylesheet" href="cliproom-box.css?v=20260827-1" />
-  <link rel="stylesheet" href="shopactivity-box.css?v=20260828-1" />
-<link rel="stylesheet" href="student-services.css?v=20260902-login-card-1" />
-  <link rel="stylesheet" href="home-summary.css?v=20260824-3" />
+  <link rel="stylesheet" href="index-fast-core.css?v=20260904-marker-right-1">
   <style>
     #learningBaseModule.shopactivity-preview{padding:52px 0;background:linear-gradient(145deg,#f4f7fb,#fff 55%,#eff5ff)}
     #learningBaseModule .shopactivity-arrow{width:40px;height:40px;padding:0;border-radius:50%;background:#fff;color:#2563eb;font-size:28px}
@@ -63,8 +64,7 @@
     #learningBaseModule .shopactivity-dot.active{width:27px;background:#2563eb}
     @media(max-width:620px){#learningBaseModule.shopactivity-preview{padding:38px 0}#learningBaseModule .shopactivity-arrow{top:auto;bottom:0;width:36px;height:36px;padding:0}}
   </style>
-  <link rel="stylesheet" href="profile-box.css?v=20260828-register-login-effect-1" />
-<link rel="stylesheet" href="student-box.css?v=20260901-two-rows-fix-2" />
+  <link rel="stylesheet" href="index-fast-profile.css?v=20260902-fast-1">
   <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link
   rel="stylesheet"
@@ -73,8 +73,8 @@
   <link rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
       media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="team-manager.css?v=20260901-index-1" />
   <link rel="stylesheet" href="theme-modern.css?v=20260902-buttons-2">
+  <link rel="stylesheet" href="book-featured.css?v=20260903-1">
 </head>
 <body class="website-data-loading theme-v2">
   <div id="adminLoginModal" class="admin-login-modal" hidden>
@@ -163,7 +163,7 @@
         </div>
       </div>
 
-      <div class="main-nav-dropdown" data-section-id="bestPracticeBox">
+      <div class="main-nav-dropdown">
         <button class="main-nav-dropdown-toggle" type="button" aria-expanded="false">
           ผลงานของเรา <span aria-hidden="true">▾</span>
         </button>
@@ -176,9 +176,9 @@
         </div>
       </div>
 
-      <a href="#learningSourceBox" data-section-id="learningSourceBox">แหล่งเรียนรู้</a>
-      <a href="#cliproomBox" data-section-id="cliproomBox">หลักสูตรออนไลน์</a>
-      <a href="#learningBaseModule" data-section-id="learningBaseModule">ช้อปกิจกรรม</a>
+      <a href="#learningSourceBox">แหล่งเรียนรู้</a>
+      <a href="#cliproomBox">หลักสูตรออนไลน์</a>
+      <a href="#learningBaseModule">ช้อปกิจกรรม</a>
 
       <div class="main-nav-dropdown">
         <button class="main-nav-dropdown-toggle" type="button" aria-expanded="false">
@@ -352,89 +352,46 @@
   </div>
 </section>
 
-<!-- บริการนักศึกษา: อยู่หลัง news-info-row และก่อนรายการ User -->
-<section id="studentServicesBox" class="student-services-section" aria-labelledby="studentServicesTitle" data-admin-section="1">
+<!-- หนังสือที่น่าอ่าน: อยู่ Box ถัดลงมาจากข่าวสาร -->
+<section id="featured" class="featured-section recommended-books-section" data-admin-section="1">
   <div class="container">
-    <div class="student-services-box">
-      <h2 id="studentServicesTitle">บริการนักศึกษา</h2>
-
-      <div class="student-services-grid">
-        <div class="student-services-account">
-          <div class="student-services-account-photo-wrap">
-            <img
-              id="studentServicesLoginPhoto"
-              class="student-services-account-image"
-              src="https://static.wixstatic.com/media/a503e5_de01d7417d364b9a81f6702f7dd6932a~mv2.png"
-              alt="ภาพหน้าเข้าสู่ระบบนักศึกษา">
-          </div>
-
-          <div class="student-services-login-panel">
-            <div class="student-services-login-brand">
-              <img
-                id="studentServicesLoginLogo"
-                class="student-services-login-logo"
-                alt="โลโก้หน่วยงาน">
-              <div id="studentServicesLoginTitle" class="student-services-login-title">ระบบช่วยเหลือผู้เรียน</div>
-              <div id="studentServicesLoginSubtitle" class="student-services-login-subtitle"></div>
-            </div>
-
-            <div class="student-services-login-divider" aria-hidden="true"></div>
-
-            <form id="studentServicesLoginForm" class="student-services-login">
-              <label for="studentServicesId">รหัสประจำตัวนักศึกษา</label>
-              <input
-                id="studentServicesId"
-                name="studentId"
-                type="text"
-                inputmode="numeric"
-                maxlength="10"
-                autocomplete="off"
-                aria-label="รหัสประจำตัวนักศึกษา">
-              <button id="studentServicesLoginBtn" type="submit">LOGIN</button>
-            </form>
-          </div>
-        </div>
-
-        <article class="student-service-card student-service-exam"
-                 data-ranking-type="quiz">
-          <div class="student-service-card-heading">
-            <strong>แบบทดสอบ</strong>
-            <span>แบบทดสอบยกระดับผลสัมฤทธิ์</span>
-          </div>
-          <p class="student-service-ranking-title">3 ลำดับ ทำแบบทดสอบสูงสุด</p>
-          <div class="student-service-board">
-            <div class="student-service-tabs" role="tablist" aria-label="เลือกระดับชั้นของรายงานแบบทดสอบ">
-              <button class="is-active" type="button" role="tab" aria-selected="true" data-level="ประถม">ประถม</button>
-              <button type="button" role="tab" aria-selected="false" data-level="ม.ต้น">ม.ต้น</button>
-              <button type="button" role="tab" aria-selected="false" data-level="ม.ปลาย">ม.ปลาย</button>
-            </div>
-            <div class="student-service-ranking" aria-live="polite">
-              <span class="student-service-ranking-status">กำลังโหลดอันดับ...</span>
-            </div>
-            <a class="student-service-open" href="quiz.html" target="_blank" rel="noopener">เข้าสู่ระบบ</a>
-          </div>
-        </article>
-
-        <article class="student-service-card student-service-classroom"
-                 data-ranking-type="worksheet">
-          <div class="student-service-card-heading">
-            <strong>ห้องเรียน</strong>
-            <span>เรียนรู้เนื้อหาวิชาด้วยสื่อและใบงาน</span>
-          </div>
-          <p class="student-service-ranking-title">3 ลำดับ ส่งใบงานสูงสุด</p>
-          <div class="student-service-board">
-            <div class="student-service-tabs" role="tablist" aria-label="เลือกระดับชั้นของรายงานใบงาน">
-              <button class="is-active" type="button" role="tab" aria-selected="true" data-level="ประถม">ประถม</button>
-              <button type="button" role="tab" aria-selected="false" data-level="ม.ต้น">ม.ต้น</button>
-              <button type="button" role="tab" aria-selected="false" data-level="ม.ปลาย">ม.ปลาย</button>
-            </div>
-            <div class="student-service-ranking" aria-live="polite">
-              <span class="student-service-ranking-status">กำลังโหลดอันดับ...</span>
-            </div>
-            <a class="student-service-open" href="classroom.html" target="_blank" rel="noopener">เข้าสู่ระบบ</a>
-          </div>
-        </article>
+    <div class="section-heading">
+      <div>
+        <span class="section-kicker">หนังสือที่น่าอ่าน</span>
+        <h2>หนังสือที่น่าสนใจ</h2>
       </div>
+      <button id="manageFeaturedBooksButton" class="editwebsite-btn book-manager-trigger admin-only" type="button"><i class="fa-solid fa-book-open" aria-hidden="true"></i> จัดการหนังสือน่าอ่าน</button>
+    </div>
+
+    <div class="book-showcase">
+      <button id="bookPrev" class="book-slider-arrow book-slider-prev" type="button" aria-label="หนังสือก่อนหน้า">‹</button>
+      <div id="bookSlides" class="book-slider-stage">
+        <div class="book-loading">กำลังโหลดหนังสือ...</div>
+      </div>
+      <button id="bookNext" class="book-slider-arrow book-slider-next" type="button" aria-label="หนังสือถัดไป">›</button>
+      <div id="bookDots" class="book-slider-dots"></div>
+    </div>
+
+<!-- ปุ่มเปิด/ปิดหนังสือทั้งหมด -->
+<div class="book-toggle-wrap">
+<button id="toggleBookListBtn"
+        class="book-list-toggle"
+        type="button"
+        aria-expanded="false">
+
+    <span class="book-toggle-icon">
+        <i class="fa fa-eye-slash"></i>
+    </span>
+
+    <span class="book-toggle-text">
+        หนังสือทั้งหมด
+    </span>
+
+</button>
+</div>
+
+    <div id="allBooksPanel" class="all-books-panel" hidden>
+      <div id="allBooksGrid" class="all-books-grid"></div>
     </div>
   </div>
 </section>
@@ -619,6 +576,14 @@
 
   </main>
 
+  <!-- Popup รายละเอียดหนังสือ -->
+  <div id="bookDetailModal" class="book-detail-modal" aria-hidden="true">
+    <div class="book-detail-box" role="dialog" aria-modal="true" aria-labelledby="bookDetailTitle">
+      <button id="bookDetailClose" class="book-detail-close" type="button" aria-label="ปิด">×</button>
+      <div id="bookDetailContent"></div>
+    </div>
+  </div>
+
   <footer id="contact" class="footer">
     <div class="container footer-inner">
       <div>
@@ -642,23 +607,23 @@
     <div class="copyright">© 2026 Mintana. All rights reserved.</div>
   </footer>
 
-<script defer src="site-fast-data.js?v=20260902-vision-1"></script>
-<script defer src="script.js?v=20260901-menu-horizontal-1"></script>
-<script defer src="announcement.js?v=20260824-1"></script>
-<script defer src="site-content.js?v=20260902-vision-1"></script>
-<script defer src="admin-mode.js?v=20260901-team-index-1"></script>
-<script defer src="team-manager.js?v=20260901-index-1"></script>
-<script defer src="admin-section-guide.js?v=20260902-mobile-nav-1"></script>
-<script defer src="home-summary.js?v=20260830-fast-2"></script>
-<script defer src="profile-config.js?v=20260821-1"></script>
-<script defer src="student-profile-login.js?v=20260902-login-card-1"></script>
-<script defer src="student-service-ranking.js?v=20260830-fast-2"></script>
-<script defer src="learning-source-box.js?v=20260901-map-v5"></script>
-  <script defer src="best-practice-box.js?v=20260901-loading-fix-2"></script>
-  <script defer src="fbpost-box.js?v=20260901-8cards-1"></script>
-  <script defer src="boss-box.js?v=20260901-team-carousel-fix-2"></script>
-  <script defer src="cliproom-box.js?v=20260815-3"></script>
-  <script defer src="shopactivity-box.js?v=20260815-1"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
 
 <!-- Student Modal -->
 <div id="studentModal" class="learning-modal">
@@ -939,8 +904,8 @@
 <!-- Popup รายละเอียดหนังสือ -->
 </div>
 
-  <script defer src="learning-base.js?v=20260828-register-login-effect-1"></script>
-  <script defer src="profile-box.js?v=20260731-1"></script>
+  
+  
 
   
 
@@ -949,99 +914,50 @@
      class="mobile-bottom-nav"
      aria-label="เมนูด้านล่าง">
 
-  <div id="mobileBottomPrimary" class="mobile-bottom-primary">
-    <a href="#home"
-       class="mobile-bottom-link active"
-       data-mobile-nav-item
-       data-nav-key="home">
-      <i class="fa fa-home" aria-hidden="true"></i>
-      <span>Home</span>
-    </a>
+  <a href="#home" class="mobile-bottom-link active" data-mobile-bottom-item data-menu-key="home">
+    <i class="fa-solid fa-house" aria-hidden="true"></i>
+    <span>Home</span>
+  </a>
 
-    <button type="button"
-            class="mobile-bottom-link mobile-bottom-menu-trigger"
-            data-mobile-nav-item
-            data-nav-key="works"
-            data-section-id="bestPracticeBox"
-            aria-haspopup="true"
-            aria-expanded="false">
-      <i class="fa fa-trophy" aria-hidden="true"></i>
-      <span>ผลงานของเรา</span>
-    </button>
+  <button type="button" class="mobile-bottom-link mobile-bottom-menu-trigger" data-mobile-bottom-item data-menu-key="works" aria-expanded="false">
+    <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+    <span>ผลงานของเรา</span>
+  </button>
 
-    <a href="#cliproomBox"
-       class="mobile-bottom-link"
-       data-mobile-nav-item
-       data-nav-key="courses"
-       data-section-id="cliproomBox">
-      <i class="fa fa-play-circle" aria-hidden="true"></i>
-      <span>หลักสูตรออนไลน์</span>
-    </a>
+  <a href="https://edudole.github.io/tambol_prototype1/#cliproomBox" class="mobile-bottom-link" data-mobile-bottom-item data-menu-key="cliproom">
+    <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+    <span>หลักสูตรออนไลน์</span>
+  </a>
 
-    <a href="#learningBaseModule"
-       class="mobile-bottom-link"
-       data-mobile-nav-item
-       data-nav-key="shop"
-       data-section-id="learningBaseModule">
-      <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-      <span>ช้อปกิจกรรม</span>
-    </a>
+  <a href="https://edudole.github.io/tambol_prototype1/#learningBaseModule" class="mobile-bottom-link" data-mobile-bottom-item data-menu-key="shopactivity">
+    <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+    <span>ช้อปกิจกรรม</span>
+  </a>
 
-    <button type="button"
-            class="mobile-bottom-link mobile-bottom-menu-trigger"
-            data-mobile-nav-item
-            data-nav-key="district"
-            aria-haspopup="true"
-            aria-expanded="false">
-      <i class="fa fa-map-marker" aria-hidden="true"></i>
-      <span>สกร.ระดับตำบล</span>
-    </button>
+  <button type="button" class="mobile-bottom-link mobile-bottom-menu-trigger" data-mobile-bottom-item data-menu-key="district" aria-expanded="false">
+    <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+    <span>สกร.ระดับตำบล</span>
+  </button>
 
-    <button type="button"
-            class="mobile-bottom-link mobile-bottom-menu-trigger"
-            data-mobile-nav-item
-            data-nav-key="library"
-            aria-haspopup="true"
-            aria-expanded="false">
-      <i class="fa fa-book" aria-hidden="true"></i>
-      <span>ห้องสมุด</span>
-    </button>
+  <button type="button" class="mobile-bottom-link mobile-bottom-menu-trigger" data-mobile-bottom-item data-menu-key="library" aria-expanded="false">
+    <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+    <span>ห้องสมุด</span>
+  </button>
 
-    <button id="mobileBottomMore"
-            type="button"
-            class="mobile-bottom-link mobile-bottom-more"
-            aria-haspopup="true"
-            aria-expanded="false"
-            hidden>
-      <i class="fa fa-bars" aria-hidden="true"></i>
-      <span>เมนู</span>
-    </button>
-  </div>
+  <button id="mobileBottomMore" type="button" class="mobile-bottom-link mobile-bottom-more" aria-expanded="false" hidden>
+    <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    <span>เมนู</span>
+  </button>
 
-  <div id="mobileBottomPanel"
-       class="mobile-bottom-panel"
-       role="dialog"
-       aria-modal="false"
-       aria-label="เมนูเพิ่มเติม"
-       hidden>
+  <div id="mobileBottomPanel" class="mobile-bottom-panel" hidden>
     <div class="mobile-bottom-panel-head">
-      <button id="mobileBottomPanelBack"
-              class="mobile-bottom-panel-back"
-              type="button"
-              aria-label="ย้อนกลับ"
-              hidden>
-        <i class="fa fa-angle-left" aria-hidden="true"></i>
-      </button>
       <strong id="mobileBottomPanelTitle">เมนู</strong>
-      <button id="mobileBottomPanelClose"
-              class="mobile-bottom-panel-close"
-              type="button"
-              aria-label="ปิดเมนู">×</button>
+      <button id="mobileBottomPanelClose" type="button" aria-label="ปิดเมนู">×</button>
     </div>
-    <div id="mobileBottomPanelList" class="mobile-bottom-panel-list"></div>
+    <div id="mobileBottomPanelBody" class="mobile-bottom-panel-body"></div>
   </div>
 </nav>
-<script defer src="mobile-bottom-nav.js?v=20260902-dynamic-overflow-1"></script>
+<script defer src="mobile-bottom-nav.js?v=20260902-mobile-nav-1"></script>
   <!-- Popup ประชาสัมพันธ์จากชีต boss -->
   <div id="bossPopup" class="boss-popup" hidden aria-hidden="true">
     <div class="boss-popup-dialog" role="dialog" aria-modal="true" aria-label="ประชาสัมพันธ์">
@@ -1053,5 +969,7 @@
     </div>
   </div>
 
+  <script defer src="book-featured.js?v=20260904-book-admin-1"></script>
+  <script defer src="index-fast.js?v=20260904-book-admin-1"></script>
 </body>
 </html>
